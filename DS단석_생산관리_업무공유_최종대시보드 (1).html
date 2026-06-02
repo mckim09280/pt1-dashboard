@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>평택1 생산관리 업무공유 시스템</title>
+<style>
+:root{
+--red:#d71920;
+--dark:#aa0f15;
+--soft:#fff1f2;
+--bg:#f5f6f8;
+--line:#e5e7eb;
+--text:#111827;
+--muted:#6b7280;
+--green:#16a34a;
+--green-bg:#dcfce7;
+--yellow:#f59e0b;
+--yellow-bg:#fef3c7;
+--blue:#2563eb;
+--blue-bg:#dbeafe;
+}
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:"Malgun Gothic",sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+.app{
+display:grid;
+grid-template-columns:240px 1fr;
+min-height:100vh;
+}
+.sidebar{
+background:#fff;
+border-right:1px solid var(--line);
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+.logo{
+padding:24px;
+border-bottom:1px solid var(--line);
+}
+.logo img{
+width:150px;
+display:block;
+}
+.menu{
+padding:16px;
+}
+.menu button{
+width:100%;
+padding:14px 16px;
+border:0;
+background:transparent;
+border-radius:12px;
+margin-bottom:8px;
+text-align:left;
+font-size:15px;
+font-weight:700;
+cursor:pointer;
+}
+.menu button.active{
+background:linear-gradient(135deg,var(--red),var(--dark));
+color:#fff;
+}
+.bottom{
+padding:20px;
+}
+.bottom button{
+width:100%;
+padding:14px;
+border-radius:12px;
+border:0;
+font-weight:700;
+cursor:pointer;
+margin-bottom:10px;
+}
+.setting{
+background:#fff;
+border:1px solid var(--line)!important;
+}
+.logout{
+background:linear-gradient(135deg,var(--red),var(--dark));
+color:#fff;
+}
+.main{
+padding:24px;
+}
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:24px;
+}
+.title h1{
+margin:0;
+font-size:34px;
+}
+.title p{
+margin:8px 0 0;
+color:var(--muted);
+}
+.actions{
+display:flex;
+gap:10px;
+}
+.actions input{
+padding:12px 14px;
+border-radius:10px;
+border:1px solid var(--line);
+font-weight:700;
+}
+.actions button{
+padding:12px 18px;
+border:0;
+border-radius:10px;
+background:linear-gradient(135deg,var(--red),var(--dark));
+color:#fff;
+font-weight:700;
+cursor:pointer;
+}
+.summary{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:18px;
+margin-bottom:20px;
+}
+.card{
+background:#fff;
+border-radius:18px;
+border:1px solid var(--line);
+box-shadow:0 5px 15px rgba(0,0,0,0.04);
+}
+.summary-card{
+padding:24px;
+}
+.summary-card h3{
+margin:0 0 10px;
+font-size:15px;
+color:#374151;
+}
+.big{
+font-size:40px;
+font-weight:900;
+color:var(--red);
+}
+.status{
+display:inline-block;
+padding:10px 18px;
+border-radius:10px;
+font-weight:900;
+font-size:30px;
+background:#f0fdf4;
+color:var(--green);
+}
+.grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:20px;
+margin-bottom:20px;
+}
+.card-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 24px;
+border-bottom:1px solid var(--line);
+}
+.card-head h2{
+margin:0;
+font-size:25px;
+}
+.add{
+padding:10px 14px;
+border-radius:10px;
+border:1px solid #fecaca;
+background:#fff;
+color:var(--red);
+font-weight:700;
+}
+.table-wrap{
+padding:20px 24px;
+overflow:auto;
+}
+table{
+width:100%;
+border-collapse:collapse;
+}
+th,td{
+padding:12px;
+border:1px solid var(--line);
+text-align:center;
+}
+th{
+background:#fafafa;
+font-size:14px;
+}
+td{
+font-size:15px;
+}
+.blue{
+color:#2563eb;
+font-weight:700;
+}
+.red{
+color:#d71920;
+font-weight:700;
+}
+.note{
+padding:0 24px 20px;
+font-size:13px;
+color:var(--muted);
+}
+.task-list{
+padding:10px 24px 24px;
+}
+.task{
+display:grid;
+grid-template-columns:24px 1fr 90px;
+gap:12px;
+align-items:center;
+padding:14px 0;
+border-bottom:1px solid var(--line);
+}
+.task:last-child{
+border-bottom:none;
+}
+.task-title{
+font-weight:700;
+margin-bottom:4px;
+}
+.task-sub{
+font-size:13px;
+color:var(--muted);
+}
+.badge{
+padding:8px 12px;
+border-radius:10px;
+font-size:13px;
+font-weight:700;
+text-align:center;
+}
+.progress{
+background:var(--yellow-bg);
+color:#b45309;
+}
+.wait{
+background:#f3f4f6;
+color:#374151;
+}
+.done{
+background:var(--green-bg);
+color:var(--green);
+}
+.check{
+background:#fee2e2;
+color:#b91c1c;
+}
+.bottom-grid{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:20px;
+}
+.small-table{
+padding:0 24px 24px;
+}
+.file-list{
+padding:10px 24px 24px;
+}
+.file{
+display:flex;
+justify-content:space-between;
+padding:14px 0;
+border-bottom:1px solid var(--line);
+font-weight:700;
+}
+.file:last-child{
+border-bottom:none;
+}
+@media(max-width:1200px){
+.summary,.bottom-grid{
+grid-template-columns:1fr 1fr;
+}
+.grid{
+grid-template-columns:1fr;
+}
+}
+@media(max-width:800px){
+.app{
+grid-template-columns:1fr;
+}
+.sidebar{
+display:none;
+}
+.summary,.bottom-grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="sidebar">
+<div>
+<div class="logo">
+<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/DS_Danseok_logo.svg/512px-DS_Danseok_logo.svg.png">
+</div>
+<div class="menu">
+<button class="active">🏠 전체 대시보드</button>
+<button>📢 공지사항</button>
+<button>📋 오늘 할 일</button>
+<button>🔧 수리현황</button>
+<button>📊 품질 · 수율 현황</button>
+<button>🧪 폴리싱 조건/품질 기록</button>
+<button>📁 파일 공유</button>
+
+<p style="margin:28px 12px 10px;font-size:13px;color:#6b7280;font-weight:700;">개인 공간</p>
+
+<button>👤 김동관 부장</button>
+<button>👤 박지수 차장</button>
+<button>👤 유상균 과장</button>
+<button>👤 최현규 대리</button>
+<button>👤 문홍일 사원</button>
+<button>👤 김명철 사원</button>
+<button>👤 박성민 사원</button>
+</div>
+</div>
+
+<div class="bottom">
+<button class="setting">⚙ 설정 관리</button>
+<button class="logout">↪ 로그아웃</button>
+</div>
+</div>
+
+<div class="main">
+
+<div class="top">
+<div class="title">
+<h1>평택1 생산관리 업무공유 시스템</h1>
+<p>오늘의 업무 현황을 한눈에 확인하세요.</p>
+</div>
+
+<div class="actions">
+<input type="date">
+<button>💾 기록 저장</button>
+</div>
+</div>
+
+<div class="summary">
+<div class="card summary-card">
+<h3>금일 운전 상태</h3>
+<div class="status">정상</div>
+<p style="color:#6b7280;margin-top:16px;">특이사항 발생 시 즉시 업데이트</p>
+</div>
+
+<div class="card summary-card">
+<h3>오늘 완료 업무</h3>
+<div class="big">6 / 9</div>
+<p style="color:#6b7280;">완료율 67%</p>
+</div>
+
+<div class="card summary-card">
+<h3>진행 중 수리</h3>
+<div class="big">3건</div>
+<p style="color:#6b7280;">프로우텍 / GEA 확인 필요</p>
+</div>
+
+<div class="card summary-card">
+<h3>품질 확인</h3>
+<div class="status" style="background:#fff7ed;color:#ea580c;">보통</div>
+<p style="color:#6b7280;margin-top:16px;">QC 분석 결과 업데이트 예정</p>
+</div>
+</div>
+
+<div class="grid">
+
+<div class="card">
+<div class="card-head">
+<h2>🧪 폴리싱 조건 / 품질 기록</h2>
+<button class="add">＋ 신규 기록 추가</button>
+</div>
+
+<div class="table-wrap">
+<table>
+<tr>
+<th rowspan="2">시간</th>
+<th colspan="4">폴리싱 조건</th>
+<th colspan="5">품질</th>
+</tr>
+
+<tr>
+<th>GYL(%)</th>
+<th>수세수(%)</th>
+<th>L/P 압력</th>
+<th>파인튜너</th>
+<th>가성(%)</th>
+<th>구연산</th>
+<th>FFA</th>
+<th>Soap</th>
+<th>A.V</th>
+</tr>
+
+<tr>
+<td>08:00</td>
+<td>7</td>
+<td>3.0</td>
+<td rowspan="2">3.5</td>
+<td rowspan="2">33</td>
+<td>0.60</td>
+<td>60</td>
+<td>0.04</td>
+<td>1110</td>
+<td class="red">0.29</td>
+</tr>
+
+<tr>
+<td>11:00</td>
+<td>7</td>
+<td class="blue">2.8</td>
+<td>0.60</td>
+<td>60</td>
+<td>0.03</td>
+<td>1010</td>
+<td class="red">0.31</td>
+</tr>
+
+<tr>
+<td>13:30</td>
+<td>7</td>
+<td class="blue">2.8</td>
+<td></td>
+<td></td>
+<td>0.60</td>
+<td>60</td>
+<td>0.03</td>
+<td>1010</td>
+<td class="red">0.27</td>
+</tr>
+
+<tr>
+<td>16:00</td>
+<td>7</td>
+<td class="blue">2.8</td>
+<td class="blue">3.4</td>
+<td>33</td>
+<td>0.60</td>
+<td>60</td>
+<td>0.03</td>
+<td>980</td>
+<td class="red">0.31</td>
+</tr>
+</table>
+</div>
+
+<div class="note">
+※ 변경된 조건은 파란색으로 표시됩니다.
+</div>
+</div>
+
+<div class="card">
+<div class="card-head">
+<h2>📋 오늘 할 일</h2>
+<button class="add">＋ 추가</button>
+</div>
+
+<div class="task-list">
+
+<div class="task">
+<input type="checkbox">
+<div>
+<div class="task-title">704 → 701 이송 상태 확인</div>
+<div class="task-sub">담당: 주간조 / 기준: A/V, Soap 수치 확인</div>
+</div>
+<div class="badge progress">진행</div>
+</div>
+
+<div class="task">
+<input type="checkbox">
+<div>
+<div class="task-title">QC 품질 결과 확인</div>
+<div class="task-sub">담당: 생산관리 / 706 함량 확인</div>
+</div>
+<div class="badge wait">대기</div>
+</div>
+
+<div class="task">
+<input type="checkbox" checked>
+<div>
+<div class="task-title">수불일지 업데이트</div>
+<div class="task-sub">담당: 김명철 / 작성 완료 후 공유</div>
+</div>
+<div class="badge done">완료</div>
+</div>
+
+<div class="task">
+<input type="checkbox">
+<div>
+<div class="task-title">수리 견적 및 입고 일정 확인</div>
+<div class="task-sub">담당: 생산관리 / 업체 확인 필요</div>
+</div>
+<div class="badge check">확인</div>
+</div>
+
+</div>
+</div>
+
+</div>
+
+<div class="bottom-grid">
+
+<div class="card">
+<div class="card-head">
+<h2>🔧 수리현황</h2>
+<button class="add">＋ 추가</button>
+</div>
+
+<div class="small-table">
+<table>
+<tr>
+<th>설비</th>
+<th>내용</th>
+<th>상태</th>
+</tr>
+
+<tr>
+<td>GA-704</td>
+<td>펌프 점검 / FRP 가공</td>
+<td><span class="badge progress">진행</span></td>
+</tr>
+
+<tr>
+<td>GEA RSE-120A</td>
+<td>Overhaul 후 진동 및 분리상태 확인</td>
+<td><span class="badge done">확인</span></td>
+</tr>
+
+<tr>
+<td>EH-711 Trap</td>
+<td>B동 2층 트랩 수리 요청</td>
+<td><span class="badge check">요청</span></td>
+</tr>
+
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="card-head">
+<h2>📊 품질 · 수율 현황</h2>
+<button class="add">＋ 추가</button>
+</div>
+
+<div class="small-table">
+<table>
+<tr>
+<th>항목</th>
+<th>금일</th>
+<th>비고</th>
+</tr>
+
+<tr>
+<td>706 함량</td>
+<td>80.0 wt%</td>
+<td><span class="badge done">목표</span></td>
+</tr>
+
+<tr>
+<td>GA702</td>
+<td>분석 대기</td>
+<td><span class="badge wait">QC</span></td>
+</tr>
+
+<tr>
+<td>누적 수율</td>
+<td>95.2 %</td>
+<td><span class="badge update" style="background:#dbeafe;color:#2563eb;">업데이트</span></td>
+</tr>
+
+<tr>
+<td>원단위</td>
+<td>1.02</td>
+<td><span class="badge progress">검토</span></td>
+</tr>
+
+</table>
+</div>
+</div>
+
+<div class="card">
+<div class="card-head">
+<h2>📁 파일 공유</h2>
+<button class="add">＋ 추가</button>
+</div>
+
+<div class="file-list">
+
+<div class="file">
+<span>📗 수불일지 바로가기</span>
+<span>↗</span>
+</div>
+
+<div class="file">
+<span>📕 주간업무보고서 바로가기</span>
+<span>↗</span>
+</div>
+
+<div class="file">
+<span>📄 수리 견적서 / 서비스리포트</span>
+<span>↗</span>
+</div>
+
+<div class="file">
+<span>📁 기타 파일 폴더</span>
+<span>↗</span>
+</div>
+
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+</body>
+</html>
